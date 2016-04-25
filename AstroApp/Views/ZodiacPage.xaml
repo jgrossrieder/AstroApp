@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="AstroApp.Views.ZodiacPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
+    xmlns:converters="using:WinUX.Xaml.Converters"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
+        <Grid.Resources>
+            <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.ColumnSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Horoscope.Sign.Name}" HorizontalAlignment="Center" Margin="20"  Foreground="{ThemeResource SystemControlHighlightAccentBrush}" FontWeight="Bold" FontSize="25" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock FontSize="12" Foreground="#FFB6B6B6" Text="{Binding Horoscope.Sign.Start, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM}'}" />
+                <TextBlock FontSize="12" Foreground="#FFB6B6B6" > - </TextBlock>
+                <TextBlock FontSize="12" Foreground="#FFB6B6B6"  Text="{Binding Horoscope.Sign.End, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM}'}" />
+            </StackPanel>
+        </StackPanel>
+
+        <Image Grid.Row="1"  HorizontalAlignment="Center" Margin="5" MaxWidth="100">
+            <Image.Source>
+                <BitmapImage UriSource="{Binding Horoscope.Sign.IconUri}"></BitmapImage>
+            </Image.Source>
+        </Image>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Text="{Binding Horoscope.GlobalText}" />
+        <ItemsControl Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding Horoscope.Topics}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Title}" Margin="2" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="2">
+                                <TextBlock Text="{Binding Stars}" />
+                                <TextBlock Text="/"></TextBlock>
+                                <TextBlock Text="{Binding TotalStars}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Description}" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Page>

@@ -1,0 +1,68 @@
+﻿<mvvm:SessionStateAwarePage
+    x:Class="AstroApp.Views.ZodiacListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
+    xmlns:converters="using:WinUX.Xaml.Converters"
+    xmlns:wpfSpark="using:WPFSpark"
+    xmlns:userControls="using:AstroApp.UserControls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d" Name="currentPage">
+    <mvvm:SessionStateAwarePage.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InvertedVisibilityConverter"/>
+    </mvvm:SessionStateAwarePage.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+        </Grid.Resources>
+        <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <TextBlock HorizontalAlignment="Center" Margin="20"  Foreground="{ThemeResource SystemControlHighlightAccentBrush}" FontWeight="Bold" FontSize="20">ON CHERCHE TES INFOS DANS LES ETOILES, ATTENDS!</TextBlock>
+            <ProgressBar  Margin="20" IsIndeterminate="True" ></ProgressBar>
+        </StackPanel>
+        <ItemsControl  ItemsSource="{Binding HoroscopeSet.Horoscopes}"  Visibility="{Binding IsLoading, Converter={StaticResource InvertedVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
+            <ItemsControl.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <userControls:WrapGridPanel Ratio="0.8" Margin="5">
+                    </userControls:WrapGridPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate >
+                    <Button Name="bt"  Margin="5" MinHeight="50" MinWidth="40" 
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" 
+                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}" 
+                            BorderBrush="{ThemeResource SystemControlForegroundChromeDisabledLowBrush}"
+                            Command="{Binding DataContext.DisplayZodiaCommand, ElementName=currentPage}"
+                            CommandParameter="{Binding}">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox>
+                                <Image  ImageFailed="Image_OnImageFailed"  HorizontalAlignment="Center" Margin="2">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding Sign.IconUri}"></BitmapImage>
+                                    </Image.Source>
+                                </Image>
+                            </Viewbox>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1" Text="{Binding Sign.Name}"   Foreground="{ThemeResource SystemControlHighlightAccentBrush}"></TextBlock>
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</mvvm:SessionStateAwarePage>
+
+
+
+
+
+
+
